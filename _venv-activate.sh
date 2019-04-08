@@ -2,21 +2,20 @@
 
 _venv-activate()
 {
-    local cur prev opts
+    local cur opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="$(echo $($(which ls) -1 ${HOME}/venvs/ | sed 's/^//'))"
+    opts="$($(which ls) -1 "${HOME}/venvs/" | sed 's/^//')"
 
     if [[ ${cur} == * ]] ; then
-        COMPREPLY=($(compgen -W "${opts}" $cur))
+        COMPREPLY=($(compgen -W "${opts}" "${cur}"))
         return 0
     fi
 }
 
 function venv-activate() {
     function display_venvs {
-        $(which ls) -1 ${HOME}/venvs/ | sed 's/^/* /'
+        $(which ls) -1 "${HOME}/venvs/" | sed 's/^/* /'
     }
     if [[ -z "$1" ]]; then
         printf "\nEnter a virtual environment:\n"
@@ -25,7 +24,7 @@ function venv-activate() {
         source "${HOME}/venvs/$1/bin/activate"
         return 0
     else
-        printf "\n$1 is not a valid virtual environment."
+        printf "\n%s is not a valid virtual environment." "${1}"
         printf "\nSelect from one of:\n"
         display_venvs
     fi
