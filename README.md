@@ -1,6 +1,6 @@
 # venv-activate
 
-Bash tab completion of activation of Python virtual environments (that are installed under `$HOME/venvs`)
+Bash tab completion of creation and activation of Python virtual environments (that are installed under `$HOME/venvs`)
 
 ## Installation
 
@@ -9,6 +9,7 @@ If `_venv-activate.sh` is installed at `/opt/_venv-activate/_venv-activate.sh` t
 ```
 # Enable tab completion of Python virtual environments
 if [ -f /opt/_venv-activate/_venv-activate.sh ]; then
+    VENV_ACTIVATE_PYTHON=$(which python3)
     . /opt/_venv-activate/_venv-activate.sh
 fi
 ```
@@ -18,10 +19,33 @@ then a user can tab complete for possible Python virtual environments to activat
 ## Example
 
 ```
-$ mkdir -p $HOME/venvs
-$ cd $HOME/venvs
-$ python3 -m venv data-science
-$ cd
+$ venv-create data-science
+```
+
+results in
+
+```
+
+# Created virtual environment data-science
+
+# To activate it run:
+
+venv-activate data-science
+
+# Then upgrade pip and friends:
+
+pip install --upgrade pip setuptools wheel
+
+# To exit the virutal environment run:
+
+deactivate
+
+
+```
+
+and then
+
+```
 $ venv-activate #tab
 ```
 
