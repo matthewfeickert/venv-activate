@@ -1,22 +1,35 @@
 #!/usr/bin/env bash
 
+if [[ -z "${VENV_ACTIVATE_HOME}" ]]; then
+    printf "\n# ERROR: venv-activate fails as VENV_ACTIVATE_HOME is not set.\n"
+    _check_flag=1
+fi
 if [[ -z "${VENV_ACTIVATE_PYTHON}" ]]; then
-    printf "\n# venv-activate fails as VENV_ACTIVATE_PYTHON is not set.\n"
+    printf "\n# ERROR: venv-activate fails as VENV_ACTIVATE_PYTHON is not set.\n"
+    _check_flag=1
+fi
+if [[ "${_check_flag}" -eq 1 ]]; then
+    unset _check_flag
+    return 1
+fi
+if [[ ! -d "${VENV_ACTIVATE_HOME}" ]]; then
+    printf "\n# ERROR: venv-venv-activate fails as VENV_ACTIVATE_HOME path %s does not exist.\n\n" "${VENV_ACTIVATE_HOME}"
     return 1
 fi
 
 function venv-create() {
-    if [[ ! -d "${HOME}/venvs" ]]; then
-        mkdir -p "${HOME}/venvs"
+    if [[ ! -d "${VENV_ACTIVATE_HOME}" ]]; then
+        printf "\n# ERROR: venv-create fails as VENV_ACTIVATE_HOME does not exist.\n\n"
+        return 1
     fi
     if [[ -z "$1" ]]; then
         printf "\nEnter a new virtual environment name\n\n"
-    elif [[ -d "${HOME}/venvs/$1" ]]; then
-        printf "\nERROR: %s already exists as a virtual environment: ${HOME}/venvs/%s\n" "${1}" "${1}"
+    elif [[ -d "${VENV_ACTIVATE_HOME}/$1" ]]; then
+        printf "\nERROR: %s already exists as a virtual environment: ${VENV_ACTIVATE_HOME}/%s\n" "${1}" "${1}"
         printf "\nEnter a new virtual environment name\n\n"
     else
-        "${VENV_ACTIVATE_PYTHON}" -m venv "${HOME}/venvs/$1"
-        . "${HOME}/venvs/$1/bin/activate"
+        "${VENV_ACTIVATE_PYTHON}" -m venv "${VENV_ACTIVATE_HOME}/${1}"
+        . "${VENV_ACTIVATE_HOME}/$1/bin/activate"
         printf "\n(%s) $ pip install --upgrade pip setuptools wheel\n" "${1}"
         pip install --upgrade --quiet pip setuptools wheel
         deactivate
@@ -33,7 +46,7 @@ _venv-activate()
     local cur opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    opts="$($(which ls) -1 "${HOME}/venvs/" | sed 's/^//')"
+    opts="$($(which ls) -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^//')"
 
     if [[ ${cur} == * ]] ; then
         COMPREPLY=($(compgen -W "${opts}" "${cur}"))
@@ -43,13 +56,13 @@ _venv-activate()
 
 function venv-activate() {
     function display_venvs {
-        $(which ls) -1 "${HOME}/venvs/" | sed 's/^/* /'
+        $(which ls) -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
     }
     if [[ -z "$1" ]]; then
         printf "\nEnter a virtual environment:\n"
         display_venvs
-    elif [[ -d "${HOME}/venvs/$1" ]]; then
-        source "${HOME}/venvs/$1/bin/activate"
+    elif [[ -d "${VENV_ACTIVATE_HOME}/$1" ]]; then
+        source "${VENV_ACTIVATE_HOME}/$1/bin/activate"
         return 0
     else
         printf "\n%s is not a valid virtual environment." "${1}"
