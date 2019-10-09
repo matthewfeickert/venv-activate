@@ -26,17 +26,15 @@ results in
 
 ```
 
+(data-science) $ pip install --upgrade pip setuptools wheel
+
 # Created virtual environment data-science
 
 # To activate it run:
 
 venv-activate data-science
 
-# Then upgrade pip and friends:
-
-pip install --upgrade pip setuptools wheel
-
-# To exit the virutal environment run:
+# To exit the virtual environment run:
 
 deactivate
 
