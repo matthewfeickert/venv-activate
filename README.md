@@ -1,6 +1,6 @@
 # venv-activate
 
-Bash tab completion of creation and activation of Python virtual environments (that are installed under `$HOME/venvs`)
+Bash tab completion of creation and activation of Python virtual environments (installed under `$HOME/.venvs` by default)
 
 ## Installation
 
@@ -9,12 +9,13 @@ If `_venv-activate.sh` is installed at `/opt/_venv-activate/_venv-activate.sh` t
 ```
 # Enable tab completion of Python virtual environments
 if [ -f /opt/_venv-activate/_venv-activate.sh ]; then
+    VENV_ACTIVATE_HOME="${HOME}/.venvs"
     VENV_ACTIVATE_PYTHON=$(which python3)
     . /opt/_venv-activate/_venv-activate.sh
 fi
 ```
 
-then a user can tab complete for possible Python virtual environments to activate with `venv-activate` if the virtual environments are installed under `$HOME/venvs/`
+then a user can tab complete for possible Python virtual environments to activate with `venv-activate` (assuming that the path of `VENV_ACTIVATE_HOME` actually exists).
 
 ## Example
 
