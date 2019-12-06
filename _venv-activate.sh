@@ -72,5 +72,29 @@ function venv-activate() {
     return 1
 }
 
+function venv-remove() {
+    function display_venvs {
+        $(which ls) -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
+    }
+    if [[ ! -d "${VENV_ACTIVATE_HOME}" ]]; then
+        printf "\n# ERROR: venv-remove fails as VENV_ACTIVATE_HOME does not exist.\n\n"
+        return 1
+    fi
+    if [[ -z "$1" ]]; then
+        printf "\nEnter a virtual environment name to remove\n\n"
+        display_venvs
+    elif [[ ! -d "${VENV_ACTIVATE_HOME}/$1" ]]; then
+        printf "\nERROR: %s does not exist as a virtual environment under ${VENV_ACTIVATE_HOME}/\n" "${1}"
+        printf "\nEnter an existing virtual environment name to remove:\n"
+        display_venvs
+    else
+        rm -rf "${VENV_ACTIVATE_HOME:?}/${1}"
+        printf "\n# Deleted virtual environment %s\n" "${1}"
+        return 0
+    fi
+    return 1
+}
+
 complete venv-create
 complete -F _venv-activate venv-activate
+complete -F _venv-activate venv-remove
