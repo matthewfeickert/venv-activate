@@ -29,6 +29,7 @@ function venv-create() {
         printf "\nEnter a new virtual environment name\n\n"
     else
         "${VENV_ACTIVATE_PYTHON}" -m venv "${VENV_ACTIVATE_HOME}/${1}"
+        # shellcheck disable=SC1090
         . "${VENV_ACTIVATE_HOME}/$1/bin/activate"
         printf "\n(%s) $ pip install --upgrade pip setuptools wheel\n" "${1}"
         pip install --upgrade --quiet pip setuptools wheel
@@ -62,6 +63,7 @@ function venv-activate() {
         printf "\nEnter a virtual environment:\n"
         display_venvs
     elif [[ -d "${VENV_ACTIVATE_HOME}/$1" ]]; then
+        # shellcheck disable=SC1090
         source "${VENV_ACTIVATE_HOME}/$1/bin/activate"
         return 0
     else
