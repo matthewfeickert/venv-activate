@@ -27,7 +27,7 @@ results in
 
 ```
 
-(data-science) $ pip install --upgrade pip setuptools wheel
+(data-science) $ python -m pip install --upgrade pip setuptools wheel
 
 # Created virtual environment data-science
 
