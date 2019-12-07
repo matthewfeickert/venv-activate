@@ -31,8 +31,8 @@ function venv-create() {
         "${VENV_ACTIVATE_PYTHON}" -m venv "${VENV_ACTIVATE_HOME}/${1}"
         # shellcheck disable=SC1090
         . "${VENV_ACTIVATE_HOME}/$1/bin/activate"
-        printf "\n(%s) $ pip install --upgrade pip setuptools wheel\n" "${1}"
-        pip install --upgrade --quiet pip setuptools wheel
+        printf "\n(%s) $ python -m pip install --upgrade pip setuptools wheel\n" "${1}"
+        python -m pip install --upgrade --quiet pip setuptools wheel
         deactivate
         printf "\n# Created virtual environment %s\n" "${1}"
         printf "\n# To activate it run:\n\nvenv-activate %s\n" "${1}"
