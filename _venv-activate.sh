@@ -47,7 +47,7 @@ _venv-activate()
     local cur opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    opts="$($(which ls) -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^//')"
+    opts="$(command ls -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^//')"
 
     if [[ ${cur} == * ]] ; then
         COMPREPLY=($(compgen -W "${opts}" "${cur}"))
@@ -57,7 +57,7 @@ _venv-activate()
 
 function venv-activate() {
     function display_venvs {
-        $(which ls) -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
+        command ls -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
     }
     if [[ -z "$1" ]]; then
         printf "\nEnter a virtual environment:\n"
@@ -76,7 +76,7 @@ function venv-activate() {
 
 function venv-remove() {
     function display_venvs {
-        $(which ls) -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
+        command ls -1 "${VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
     }
     if [[ ! -d "${VENV_ACTIVATE_HOME}" ]]; then
         printf "\n# ERROR: venv-remove fails as VENV_ACTIVATE_HOME does not exist.\n\n"
