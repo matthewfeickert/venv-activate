@@ -9,8 +9,8 @@ If `_venv-activate.sh` is installed at `/opt/_venv-activate/_venv-activate.sh` t
 ```
 # Enable tab completion of Python virtual environments
 if [ -f /opt/_venv-activate/_venv-activate.sh ]; then
-    VENV_ACTIVATE_HOME="${HOME}/.venvs"
-    VENV_ACTIVATE_PYTHON=$(which python3)
+    _VENV_ACTIVATE_HOME="${HOME}/.venvs"
+    _VENV_ACTIVATE_PYTHON=$(which python3)
     . /opt/_venv-activate/_venv-activate.sh
 fi
 ```
