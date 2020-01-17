@@ -97,6 +97,32 @@ function venv-remove() {
     return 1
 }
 
+function venv-info() {
+    function display_venvs {
+        command ls -1 "${_VENV_ACTIVATE_HOME}/" | sed 's/^/* /'
+    }
+    if [[ ! -d "${_VENV_ACTIVATE_HOME}" ]]; then
+        printf "\n# ERROR: venv-info fails as _VENV_ACTIVATE_HOME does not exist.\n\n"
+        return 1
+    fi
+    if [[ -z "$1" ]]; then
+        printf "\nEnter a virtual environment name to show information:\n\n"
+        display_venvs
+    elif [[ ! -d "${_VENV_ACTIVATE_HOME}/$1" ]]; then
+        printf "\nERROR: %s does not exist as a virtual environment under ${_VENV_ACTIVATE_HOME}/\n" "${1}"
+        printf "\nEnter an existing virtual environment name to show information:\n"
+        display_venvs
+    else
+        local venv_bin="${_VENV_ACTIVATE_HOME:?}/${1}/bin"
+        printf "\n# Python   : v%s\n" "$(${venv_bin}/python --version | awk '{print $NF}')"
+        printf "# pip      : v%s\n" "$(${venv_bin}/python -m pip --version | awk '{print $2}')"
+        printf "# installed: %s\n" "$(${venv_bin}/python -m pip freeze | wc -l) packages"
+        return 0
+    fi
+    return 1
+}
+
 complete venv-create
 complete -F _venv-activate venv-activate
 complete -F _venv-activate venv-remove
+complete -F _venv-activate venv-info
