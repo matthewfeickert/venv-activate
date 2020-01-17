@@ -142,7 +142,7 @@ function venv-pip() {
         display_venvs
     elif [[ ! -d "${_VENV_ACTIVATE_HOME}/$2" ]]; then
         printf "\nERROR: %s does not exist as a virtual environment under ${_VENV_ACTIVATE_HOME}/\n" "${2}"
-        printf "\nEnter an existing virtual environment name:\n"
+        printf "\nEnter an existing virtual environment name to run python -m pip ${1} inside:\n"
         display_venvs
     else
         local venv_bin="${_VENV_ACTIVATE_HOME:?}/${2}/bin"
